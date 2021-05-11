@@ -5,10 +5,6 @@ import numpy as np
 import h5py
 
 
-#prefix = 'C:\\Users\\yuan\\Downloads'
-# prefix = '/Users/yuan/Downloads/'
-prefix = './datasets/'
-
 def get_img(img_path, is_crop=True, crop_h=256, resize_h=64, normalize=False):
     img = scipy.misc.imread(img_path, mode='RGB').astype(np.float)
     resize_w = resize_h
@@ -52,12 +48,11 @@ def get_img(img_path, is_crop=True, crop_h=256, resize_h=64, normalize=False):
 
 
 class CelebA():
-    def __init__(self):
-        datapath = 'celeba-hq-1024x1024.h5'
+    def __init__(self, path):
         resolution = ['data2x2', 'data4x4', 'data8x8', 'data16x16', 'data32x32', 'data64x64', \
                         'data128x128', 'data256x256', 'data512x512', 'data1024x1024']
         self._base_key = 'data'
-        self.dataset = h5py.File(os.path.join(prefix, datapath), 'r')
+        self.dataset = h5py.File(path, 'r')
         self._len = {k:len(self.dataset[k]) for k in resolution}
         assert all([resol in self.dataset.keys() for resol in resolution])
 
@@ -73,7 +68,7 @@ class CelebA():
                 batch_x = batch_x * max_lw + low_resol_batch_x * min_lw
         return batch_x
 
-    def save_imgs(self, samples, file_name):
+    """def save_imgs(self, samples, file_name):
         N_samples, channel, height, width = samples.shape
         N_row = N_col = int(np.ceil(N_samples**0.5))
         combined_imgs = np.ones((channel, N_row*height, N_col*width))
@@ -83,6 +78,8 @@ class CelebA():
                     combined_imgs[:,i*height:(i+1)*height, j*width:(j+1)*width] = samples[i*N_col+j]
         combined_imgs = np.transpose(combined_imgs, [1, 2, 0])
         scipy.misc.imsave(file_name+'.png', combined_imgs)
+    """
+
 
 
 class RandomNoiseGenerator():
@@ -98,3 +95,11 @@ class RandomNoiseGenerator():
 
     def __call__(self, batch_size):
         return self.generator([batch_size, self.size]).astype(np.float32)
+
+
+if __name__ == "__main__":
+    pass
+    #f = h5py.File("/Users/nduginets/PycharmProjects/PyTorch-progressive_growing_of_gans/h5.txt", 'r')
+    #print(f.keys())
+    #for k in f.keys():
+    #    print(f[k][0])

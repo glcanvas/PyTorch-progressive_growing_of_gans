@@ -25,8 +25,7 @@ for name, p in param_D:
 print(G)
 print(D)
 
-G.cuda(1)
-D.cuda(1)
+
 data = CelebA()
 z = Variable((torch.rand(3, 512)-0.5)*2).cuda(1)
 x = G(z, cur_level=1.2)
@@ -46,3 +45,6 @@ print('D:')
 for name, p in D.named_parameters():
 	if p.grad is not None:
 		print(name, p.size(), p.grad.mean().data[0])
+
+if __name__ == "__main__":
+	pass

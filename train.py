@@ -110,18 +110,18 @@ class PGGAN():
         return 0.0
 
     def _get_data(self, d):
-        return d.data[0] if isinstance(d, Variable) else d
+        return d.item() if isinstance(d, Variable) else d
 
     def compute_G_loss(self):
-        g_adv_loss = self.compute_adv_loss(self.d_fake, True, 1)
+        g_adv_loss = self.compute_adv_loss(self.d_fake, 1, 1)
         g_add_loss = self.compute_additional_g_loss()
         self.g_adv_loss = self._get_data(g_adv_loss)
         self.g_add_loss = self._get_data(g_add_loss)
         return g_adv_loss + g_add_loss
 
     def compute_D_loss(self):
-        self.d_adv_loss_real = self.compute_adv_loss(self.d_real, True, 0.5)
-        self.d_adv_loss_fake = self.compute_adv_loss(self.d_fake, False, 0.5) * self.opts['fake_weight']
+        self.d_adv_loss_real = self.compute_adv_loss(self.d_real, 1, 0.5)
+        self.d_adv_loss_fake = self.compute_adv_loss(self.d_fake, 0, 0.5) * self.opts['fake_weight']
         d_adv_loss = self.d_adv_loss_real + self.d_adv_loss_fake
         d_add_loss = self.compute_additional_d_loss()
         self.d_adv_loss = self._get_data(d_adv_loss)
@@ -188,7 +188,7 @@ class PGGAN():
             return 0
 
         if hasattr(self, '_d_'):
-            self._d_ = self._d_ * 0.9 + np.clip(torch.mean(self.d_real).data[0], 0.0, 1.0) * 0.1
+            self._d_ = self._d_ * 0.9 + np.clip(torch.mean(self.d_real).item(), 0.0, 1.0) * 0.1
         else:
             self._d_ = 0.0
         strength = 0.2 * max(0, self._d_ - 0.5)**2
@@ -395,6 +395,7 @@ if __name__ == '__main__':
     parser.add_argument('--restore_dir', default='', type=str, help='restore from which exp dir.')
     parser.add_argument('--which_file', default='', type=str, help='restore from which file, e.g. 128x128-fade_in-105000.')
 
+    "--exp_dir /!!! save_freq=500"
     # TODO: support conditional inputs
 
     args = parser.parse_args()
@@ -413,7 +414,7 @@ if __name__ == '__main__':
     D = Discriminator(num_channels=3, mbstat_avg=args.mbstat_avg, resolution=args.target_resol, fmap_max=latent_size, fmap_base=8192, sigmoid_at_end=sigmoid_at_end)
     print(G)
     print(D)
-    data = CelebA()
+    data = CelebA("/Users/nduginets/PycharmProjects/PyTorch-progressive_growing_of_gans/h5.txt")
     noise = RandomNoiseGenerator(latent_size, 'gaussian')
     pggan = PGGAN(G, D, data, noise, opts)
     pggan.train()
