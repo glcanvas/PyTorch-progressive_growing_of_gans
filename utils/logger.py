@@ -4,7 +4,7 @@ Reference : https://github.com/SherlockLiao/pytorch-beginner/tree/master/04-Conv
 """
 import tensorflow as tf
 import numpy as np
-import scipy.misc
+import depric as dep
 try:
     from StringIO import StringIO  # Python 2.7
 except ImportError:
@@ -33,7 +33,7 @@ class Logger(object):
                 s = StringIO()
             except:
                 s = BytesIO()
-            scipy.misc.toimage(img).save(s, format="png")
+            dep.toimage(img).save(s, format="png")
 
             # Create an Image object
             img_sum = tf.Summary.Image(encoded_image_string=s.getvalue(),

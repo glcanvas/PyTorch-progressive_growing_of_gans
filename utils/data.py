@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
-import os, scipy.misc
+import os
 from glob import glob
 import numpy as np 
 import h5py
 
-
+"""
 def get_img(img_path, is_crop=True, crop_h=256, resize_h=64, normalize=False):
     img = scipy.misc.imread(img_path, mode='RGB').astype(np.float)
     resize_w = resize_h
@@ -19,7 +19,7 @@ def get_img(img_path, is_crop=True, crop_h=256, resize_h=64, normalize=False):
     if normalize:
         cropped_image = cropped_image/127.5 - 1.0
     return np.transpose(cropped_image, [2, 0, 1])
-
+"""
 
 # class CelebA():
 #     def __init__(self):
