@@ -388,7 +388,7 @@ if __name__ == '__main__':
     parser.add_argument('--drift', default=1e-3, type=float, help='drift, only available for wgan_gp.')
     parser.add_argument('--mbstat_avg', default='all', type=str, help='MinibatchStatConcatLayer averaging strategy (Which dimensions to average the statistic over?)')
     parser.add_argument('--sample_freq', default=500, type=int, help='sampling frequency.')
-    parser.add_argument('--save_freq', default=5000, type=int, help='save model frequency.')
+    parser.add_argument('--save_freq', default=100, type=int, help='save model frequency.')
     parser.add_argument('--exp_dir', default='./exp', type=str, help='experiment dir.')
     parser.add_argument('--no_noise', action='store_true', help='do not add noise to real data.')
     parser.add_argument('--no_tanh', action='store_true', help='do not use tanh in the last layer of the generator.')
