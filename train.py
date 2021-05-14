@@ -415,7 +415,7 @@ if __name__ == '__main__':
     D = Discriminator(num_channels=3, mbstat_avg=args.mbstat_avg, resolution=args.target_resol, fmap_max=latent_size, fmap_base=8192, sigmoid_at_end=sigmoid_at_end)
     print(G)
     print(D)
-    data = CelebA(args['data_path'])
+    data = CelebA(args.data_path)
     noise = RandomNoiseGenerator(latent_size, 'gaussian')
     pggan = PGGAN(G, D, data, noise, opts)
     pggan.train()
