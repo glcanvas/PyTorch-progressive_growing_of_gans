@@ -394,6 +394,7 @@ if __name__ == '__main__':
     parser.add_argument('--no_tanh', action='store_true', help='do not use tanh in the last layer of the generator.')
     parser.add_argument('--restore_dir', default='', type=str, help='restore from which exp dir.')
     parser.add_argument('--which_file', default='', type=str, help='restore from which file, e.g. 128x128-fade_in-105000.')
+    parser.add_argument("--data_path", default='', type=str, help='path to data base')
 
     "--exp_dir /!!! save_freq=500"
     # TODO: support conditional inputs
@@ -414,7 +415,7 @@ if __name__ == '__main__':
     D = Discriminator(num_channels=3, mbstat_avg=args.mbstat_avg, resolution=args.target_resol, fmap_max=latent_size, fmap_base=8192, sigmoid_at_end=sigmoid_at_end)
     print(G)
     print(D)
-    data = CelebA("/Users/nduginets/PycharmProjects/PyTorch-progressive_growing_of_gans/h5.txt")
+    data = CelebA(args['data_path'])
     noise = RandomNoiseGenerator(latent_size, 'gaussian')
     pggan = PGGAN(G, D, data, noise, opts)
     pggan.train()
